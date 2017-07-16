@@ -1,11 +1,19 @@
 const path = require('path');
- 
+const webpack = require('webpack');
+
 module.exports = {
-  context: path.join(__dirname, 'src'),
-  entry: './index.js',
+  entry: {
+    'app': [
+      'react-hot-loader/patch',
+      'webpack-dev-server/client?http://localhost:8080',
+      'webpack/hot/only-dev-server',
+      './src/index.js'
+    ]
+  },
   output: {
     path: path.join(__dirname, 'public'),
     filename: 'bundle.js',
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -23,4 +31,13 @@ module.exports = {
       path.join(__dirname, 'node_modules'),
     ],
   },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  devServer: {
+    hot: true,
+    inline: false,
+    publicPath: '/',
+    contentBase: path.join(__dirname, 'public'),
+  }
 };
